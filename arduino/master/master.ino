@@ -36,10 +36,6 @@ void serialEvent() {
         text += inchr;
     }
   }
-  if(text == "CCOK") {
-    cc = true;
-    return;
-  }
   int dspl = text.substring(0,2).toInt();
   int line = text.substring(2,4).toInt();
   int chr = text.substring(4,6).toInt();
