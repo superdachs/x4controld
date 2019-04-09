@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  controld:
+    build:
+      context: .
+    volumes:
+      - /dev/ttyUSB1:/dev/ttyUSB1
+    entrypoint: python /x4controld.py
+    privileged: true

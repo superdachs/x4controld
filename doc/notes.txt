@@ -1,0 +1,6 @@
+Display protocol:
+
+[DISPLAY][LINE][CHAR]TEXT\n
+010000TEST TEXT\n
+TEXT is max 20 chars long
+
