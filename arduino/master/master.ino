@@ -1,11 +1,10 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-
 LiquidCrystal_I2C lcd1(0x26, 20, 4);
 LiquidCrystal_I2C lcd2(0x27, 20, 4);
 
-
+bool cc = false;
 
 void setup() {
   Serial.begin(9600);
@@ -20,7 +19,10 @@ void setup() {
 }
 
 void loop() {
+  
 }
+
+
 
 void serialEvent() {
   String text = "";
@@ -34,14 +36,16 @@ void serialEvent() {
         text += inchr;
     }
   }
-  
+  if(text == "CCOK") {
+    cc = true;
+    return;
+  }
   int dspl = text.substring(0,2).toInt();
   int line = text.substring(2,4).toInt();
   int chr = text.substring(4,6).toInt();
   String txt = text.substring(6,26);
 
-  setDisplay(dspl, line, chr, txt);  
-  
+  setDisplay(dspl, line, chr, txt);    
 }  
 
 void setDisplay(int dspl, int line, int chr, String txt) {
