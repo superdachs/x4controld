@@ -1,11 +1,17 @@
 import serial
 import time
+import datetime
+import os
+import logging
 
-ser = serial.Serial('/dev/ttyUSB1', 9600)
+port = os.getenv('SERIAL_PORT')
+print(port)
+
+ser = serial.Serial(port, 9600)
 
 # main loop
 terminate = False
 while not terminate:
     print('running...')
-    ser.write(b"000000Hello from docker!\n")
+    ser.write(f"000000{str(datetime.datetime.now())}\n".encode('UTF-8'))
     time.sleep(1)

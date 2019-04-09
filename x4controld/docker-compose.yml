@@ -4,7 +4,9 @@ services:
   controld:
     build:
       context: .
+    environment:
+      - SERIAL_PORT=${SERIAL_PORT}
     volumes:
-      - /dev/ttyUSB1:/dev/ttyUSB1
+      - ${SERIAL_PORT}:${SERIAL_PORT}
     entrypoint: python /x4controld.py
     privileged: true
