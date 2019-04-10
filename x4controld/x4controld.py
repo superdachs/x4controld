@@ -56,8 +56,11 @@ def update_leds():
             time.sleep(1)
 
 
+
 # main loop
 terminate = False
 while not terminate:
     update_displays()
     update_leds()
+    time.sleep(1)
+

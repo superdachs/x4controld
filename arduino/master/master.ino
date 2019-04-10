@@ -10,7 +10,7 @@ int ledpins[6] = { 12,11,10,9,8,7 };
 
 void setup() {
   Serial.begin(9600);
-  Wire.begin();
+  Wire.begin(1);
   Serial.println("Controller booting");
   Serial.println("init lcd0");
   lcd1.init();
@@ -22,15 +22,27 @@ void setup() {
   for (int thisPin = 0; thisPin < sizeof(ledpins); thisPin++) {
     pinMode(ledpins[thisPin], OUTPUT);
   }
-
+  Wire.onReceive(receiveEvent);
 }
+
+
 
 void loop() {
-  Serial.println("sending request");
+  String message;
   Wire.requestFrom(10, 15);
-  delay(500);
+  Serial.println("sent request to 10");
+  while (Wire.available()) {
+    char c = Wire.read();
+    message += c;
+  }
+  Serial.println(message);
+  
 }
 
+
+void receiveEvent(int numBytes) {
+  Serial.println("got message");
+}
 
 void serialEvent() {
   String text = "";

@@ -1,4 +1,4 @@
-#include <Wire.h>
+#include <HardWire.h>
 
 #define j1x A1
 #define j1y A2
@@ -25,11 +25,17 @@ void loop() {
   j1bv = String(digitalRead(j1b));
   String st = "00" + j1bv + j1xv + j1yv + "\n";
   st.toCharArray(status, 15);
-  delay(100);
+  Wire.beginTransmission(1);
+  Wire.write("Hallo");
+  int stat = Wire.endTransmission();
+  Serial.write(stat);
+  delay(1000);
 }
 
 void requestEvent() {
-  Serial.println("sending:");
-  Serial.println(status);
+  status = "Hallo";
+  Serial.println("got request!");
   Wire.write(status);
+  Serial.print("sent: ");
+  Serial.println(status);
 }
