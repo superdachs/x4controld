@@ -6,8 +6,11 @@ LiquidCrystal_I2C lcd2(0x27, 20, 4);
 
 bool cc = false;
 
+int ledpins[6] = { 12,11,10,9,8,7 };
+
 void setup() {
   Serial.begin(9600);
+  Wire.begin();
   Serial.println("Controller booting");
   Serial.println("init lcd0");
   lcd1.init();
@@ -16,12 +19,17 @@ void setup() {
   lcd2.init();
   lcd2.backlight();
   Serial.println("Controller is up");
+  for (int thisPin = 0; thisPin < sizeof(ledpins); thisPin++) {
+    pinMode(ledpins[thisPin], OUTPUT);
+  }
+
 }
 
 void loop() {
-  
+  Serial.println("sending request");
+  Wire.requestFrom(10, 15);
+  delay(500);
 }
-
 
 
 void serialEvent() {
@@ -36,25 +44,28 @@ void serialEvent() {
         text += inchr;
     }
   }
-  String dev = text.substring(0,4);
+  Serial.println(text);
+  String dev = text.substring(0,3);
+  Serial.println(dev);
   if(dev == "LCD") {
-    int dspl = text.substring(4,6).toInt();
-    int line = text.substring(6,8).toInt();
-    int chr = text.substring(8,10).toInt();
-    String txt = text.substring(10,29);
+    int dspl = text.substring(3,5).toInt();
+    int line = text.substring(5,7).toInt();
+    int chr = text.substring(7,9).toInt();
+    String txt = text.substring(9,29);
     setDisplay(dspl, line, chr, txt);
   }
   if(dev == "LED") {
-    int dev = text.substring(4,6).toInt();
-    int led = text.substring(6,8).toInt();
-    int val = text.substring(8,10).toInt();
-    setLed(led, value);
+    int dev = text.substring(3,5).toInt();
+    int led = text.substring(5,7).toInt();
+    int val = text.substring(7,9).toInt();
+    setLed(dev, led, val);
   }
 }  
 
 void setLed(int dev, int led, int value) {
-  if(dev == "0") {
-    digitalWrite(led, value);
+  if(dev == 0) {
+    Serial.println("Setting LED " + (String)ledpins[led] + " to value " + (String)value);
+    digitalWrite(ledpins[led], value);
   }
 }
 

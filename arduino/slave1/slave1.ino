@@ -5,26 +5,31 @@
 
 int j1b = 12;
 
+char* status;
+
 void setup() {
   pinMode(j1b, INPUT_PULLUP);
   
   Serial.begin(9600);
-  Wire.begin(25);
+  Wire.begin(10);
   Wire.onRequest(requestEvent);
 }
 
-void loop() {
-  int j1xv = analogRead(j1x);
-  int j1yv = analogRead(j1y);
-  int j1bv = digitalRead(j1b);
-  Serial.println(j1xv);
-  Serial.println(j1yv);
-  Serial.println(j1bv);
-  delay(100);
+char* j1xv;
+char* j1yv;
+String j1bv;
 
+void loop() {
+  sprintf(j1xv, "%04d", analogRead(j1x));
+  sprintf(j1yv, "%04d", analogRead(j1y));
+  j1bv = String(digitalRead(j1b));
+  String st = "00" + j1bv + j1xv + j1yv + "\n";
+  st.toCharArray(status, 15);
+  delay(100);
 }
 
 void requestEvent() {
-  Serial.println("got request");
-  Wire.write("hello");
+  Serial.println("sending:");
+  Serial.println(status);
+  Wire.write(status);
 }
