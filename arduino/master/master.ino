@@ -26,7 +26,7 @@ void loop() {
 
 void serialEvent() {
   String text = "";
-  text.reserve(26);
+  text.reserve(29);
   char inchr;
 
   while(inchr != '\n') {
@@ -36,13 +36,24 @@ void serialEvent() {
         text += inchr;
     }
   }
-  int dspl = text.substring(0,2).toInt();
-  int line = text.substring(2,4).toInt();
-  int chr = text.substring(4,6).toInt();
-  String txt = text.substring(6,26);
-
-  setDisplay(dspl, line, chr, txt);    
+  String dev = text.substring(0,4);
+  if(dev == "LCD") {
+    int dspl = text.substring(4,6).toInt();
+    int line = text.substring(6,8).toInt();
+    int chr = text.substring(8,10).toInt();
+    String txt = text.substring(10,29);
+    setDisplay(dspl, line, chr, txt);
+  }
+  if(dev == "LED") {
+    int led = text.substring(4,6).toInt();
+    int val = text.substring(6,8).toInt();
+    setLed(led, value);
+  }
 }  
+
+void setLed(int led, int value) {
+  digitalWrite(led, value);
+}
 
 void setDisplay(int dspl, int line, int chr, String txt) {
   Serial.println("writing " + txt + " to display " + String(dspl) + " line " + String(line) + " pos " + String(chr) + "\n");

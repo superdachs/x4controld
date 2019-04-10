@@ -37,7 +37,7 @@ def update_displays():
     for display, lines in displays.items():
         for line, positions in lines.items():
             for pos, text in positions.items():
-                t = f"DPL{display:02d}{line:02d}{pos:02d}{text}\n"
+                t = f"LCD{display:02d}{line:02d}{pos:02d}{text}\n"
                 log.debug(t)
                 ser.write(t.encode('UTF-8'))
                 time.sleep(1)
