@@ -45,14 +45,17 @@ void serialEvent() {
     setDisplay(dspl, line, chr, txt);
   }
   if(dev == "LED") {
-    int led = text.substring(4,6).toInt();
-    int val = text.substring(6,8).toInt();
+    int dev = text.substring(4,6).toInt();
+    int led = text.substring(6,8).toInt();
+    int val = text.substring(8,10).toInt();
     setLed(led, value);
   }
 }  
 
-void setLed(int led, int value) {
-  digitalWrite(led, value);
+void setLed(int dev, int led, int value) {
+  if(dev == "0") {
+    digitalWrite(led, value);
+  }
 }
 
 void setDisplay(int dspl, int line, int chr, String txt) {
