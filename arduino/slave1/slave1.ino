@@ -1,11 +1,11 @@
-#include <HardWire.h>
+#include <Wire.h>
 
 #define j1x A1
 #define j1y A2
 
 int j1b = 12;
 
-char* status;
+String status = "00000000000";
 
 void setup() {
   pinMode(j1b, INPUT_PULLUP);
@@ -23,19 +23,14 @@ void loop() {
   sprintf(j1xv, "%04d", analogRead(j1x));
   sprintf(j1yv, "%04d", analogRead(j1y));
   j1bv = String(digitalRead(j1b));
-  String st = "00" + j1bv + j1xv + j1yv + "\n";
-  st.toCharArray(status, 15);
-  Wire.beginTransmission(1);
-  Wire.write("Hallo");
-  int stat = Wire.endTransmission();
-  Serial.write(stat);
-  delay(1000);
+  status = "00" + j1bv + j1xv + j1yv + "\n";
+  Serial.println(status);
+  delay(100);
 }
 
 void requestEvent() {
-  status = "Hallo";
   Serial.println("got request!");
-  Wire.write(status);
+  Wire.write(status.c_str());
   Serial.print("sent: ");
   Serial.println(status);
 }

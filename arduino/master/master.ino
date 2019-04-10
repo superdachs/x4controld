@@ -29,14 +29,14 @@ void setup() {
 
 void loop() {
   String message;
-  Wire.requestFrom(10, 15);
+  Wire.requestFrom(10, 10);
   Serial.println("sent request to 10");
   while (Wire.available()) {
     char c = Wire.read();
     message += c;
   }
   Serial.println(message);
-  
+  delay(200);
 }
 
 
