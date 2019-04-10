@@ -9,6 +9,8 @@ port = os.getenv('SERIAL_PORT')
 
 ser = serial.Serial(port, 9600)
 
+
+displays_changed = False
 displays = {
     0: {
         0: {
@@ -23,19 +25,36 @@ displays = {
     },
 }
 
+leds_changed = False
+leds = {
+    0: 1,
+    1: 0,
+    2: 1,
+    3: 1,
+}
+
 def update_displays():
     for display, lines in displays.items():
         for line, positions in lines.items():
             for pos, text in positions.items():
-                t = f"{display:02d}{line:02d}{pos:02d}{text}\n"
+                t = f"DPL{display:02d}{line:02d}{pos:02d}{text}\n"
                 log.debug(t)
                 ser.write(t.encode('UTF-8'))
                 time.sleep(1)
+
+def update_leds():
+    for led, value in leds.items():
+        t = f"LED{led:02d}{value:02d}\n"
+        log.debug(t)
+        ser.write(t.encode('UTF-8'))
+        time.sleep(1)
+
 
 # main loop
 terminate = False
 while not terminate:
     update_displays()
+    update_leds()
 
 
 
