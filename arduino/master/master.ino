@@ -1,5 +1,9 @@
+#include <Joystick.h>
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+
+Joystick_ Joystick;
 
 LiquidCrystal_I2C lcd1(0x26, 20, 4);
 LiquidCrystal_I2C lcd2(0x27, 20, 4);
@@ -29,7 +33,7 @@ void setup() {
 
 void loop() {
   String message;
-  Wire.requestFrom(10, 10);
+  Wire.requestFrom(10, 11);
   Serial.println("sent request to 10");
   while (Wire.available()) {
     char c = Wire.read();
